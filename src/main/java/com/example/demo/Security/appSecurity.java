@@ -9,33 +9,40 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.example.demo.AdminRelate.adminService;
+import com.example.demo.UserRelate.userService;
 @Configuration
 @EnableWebSecurity
 
 public class appSecurity extends WebSecurityConfigurerAdapter {
 	private BCryptPasswordEncoder encode;
 	private adminService service;
-	
+	private userService user;
 
-	public appSecurity(BCryptPasswordEncoder encode, adminService service) {
+	
+	public appSecurity(BCryptPasswordEncoder encode, adminService service, userService user) {
 		super();
 		this.encode = encode;
 		this.service = service;
+		this.user = user;
 	}
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
 		http
 			.csrf()
 					.disable()
-			.authorizeHttpRequests()
+			.authorizeRequests()
 			.antMatchers("/h2-console/**").permitAll()
-			.antMatchers("/images/**").permitAll()
 			.antMatchers("/css/**").permitAll()
 			.antMatchers("/js/**").permitAll()
 			.antMatchers("/user/regist").permitAll()
 			.antMatchers("/admin/regist").permitAll()
+			.antMatchers("/user/regist").permitAll()
 			.anyRequest().authenticated()
-				.and().formLogin().loginPage("/login").permitAll();
+				.and()
+				.formLogin()
+					.loginPage("/login")
+						.permitAll()
+				.defaultSuccessUrl("/");
 		http.headers().frameOptions().disable();
 	}
 	@Override
@@ -43,6 +50,7 @@ public class appSecurity extends WebSecurityConfigurerAdapter {
 	throws Exception{
 		auth
 			.userDetailsService(service)
+			.and().userDetailsService(user)
 			.passwordEncoder(encode);
 	}
 }

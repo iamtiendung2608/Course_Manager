@@ -1,10 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="https://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<body>
+<style>
+span{
+	color : red;
+}
 
+</style>
+<body>
+	<form th:object="${user}" th:action="@{/user/regist}" method="post">
+		Username: <input type="text" th:field="${user.username}">
+			<span th:if="*{#fields.hasErrors('username')}" th:errors="*{username}"></span>
+		<br>
+		Password: <input type="password" th:field="${user.password}">
+			<span th:if="*{#fields.hasErrors('password')}" th:errors="*{password}"></span>
+		<br>
+		Choose your degree:
+		<select th:field="${user.userDegree}">
+			<option th:each="Type : ${userType}"
+				th:value="${Type}"
+				th:text="${Type.Name}"
+			></option>
+		</select> 
+		<input type="submit" value="Submit!">
+	</form>
 </body>
 </html>

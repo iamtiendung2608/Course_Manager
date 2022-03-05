@@ -5,14 +5,18 @@
 <title>Admin Regist</title>
 </head>
 <body>
-	<h1>login</h1>
-	<select >
-		<option
-		 th:value="${Type}" 
-		 th:text="${Type.Name}"
-		 th:each="Type : ${degreeType}"
-		 ></option>
-	
-	</select>
+	<h1>Admin Signup</h1>
+	<form th:object="${admin}" th:action="@{/admin/regist}" method="post">
+		Username: <input type="text" th:field="${admin.username}"><br>
+		Password: <input type="password" th:field="${admin.password}"><br>
+		Choose your degree:
+		<select th:field="${admin.degree}">
+			<option th:each="Type : ${degreeType}"
+				th:value="${Type}"
+				th:text="${Type.Name}"
+			></option>
+		</select> 
+		<input type="submit" value="Submit!">
+	</form>
 </body>
 </html>

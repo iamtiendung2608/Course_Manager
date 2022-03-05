@@ -1,73 +1,66 @@
-package com.example.demo.AdminRelate;
+package com.example.demo.UserRelate;
 
-import java.util.Collection;
-import java.util.Collections;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.demo.Degree;
 import com.example.demo.Role;
 
+import java.util.Collection;
+import java.util.Collections;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 @Entity
-public class adminAccount implements UserDetails{
+public class userAccount implements UserDetails {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int ID;
+	private int Id;
 	@NotBlank(message="username mustn't be null")
 	private String username;
-	@Pattern(regexp="[a-zA-Z0-9_]{4,}",message="password must have at least "
-			+ "4 characters")
+	
+	
+	@Pattern(regexp="[a-zA-Z]+",message="password must contain letter")
 	private String password;
-	private Role adminRole;
-	private Degree degree;
-	
-	
-	public adminAccount(String username, String password, Role adminRole, Degree degree) {
+	private Role userRole;
+	private Degree userDegree;
+	public userAccount(String username, String password, Degree userDegree) {
 		super();
 		this.username = username;
 		this.password = password;
-		this.adminRole = adminRole;
-		this.degree = degree;
-		this.adminRole=Role.Admin;
+		this.userRole = Role.User;
+		this.userDegree = userDegree;
 	}
-
-	public adminAccount() {
-		this.adminRole=Role.Admin;
-	}
-	public adminAccount(int iD, String username, String password, Role adminRole) {
-		ID = iD;
+	public userAccount(int id, String username, String password) {
+		super();
+		Id = id;
 		this.username = username;
 		this.password = password;
-		this.adminRole = adminRole;
-		this.adminRole=Role.Admin;
+		this.userRole=Role.User;
 	}
 
+	public userAccount() {
+		this.userRole=Role.User;
+	}
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
-		SimpleGrantedAuthority simple=new SimpleGrantedAuthority
-				(adminRole.name());
-		return Collections.singleton(simple);
+		SimpleGrantedAuthority authority=new SimpleGrantedAuthority(this.userRole.name());
+		return Collections.singleton(authority);
 	}
 	@Override
 	public String getPassword() {
 		// TODO Auto-generated method stub
-		return password;
+		return this.password;
 	}
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub
-		return username;
+		return this.username;
 	}
 	@Override
 	public boolean isAccountNonExpired() {
@@ -89,14 +82,20 @@ public class adminAccount implements UserDetails{
 		// TODO Auto-generated method stub
 		return true;
 	}
-	public Role getAdminRole() {
-		return adminRole;
+	public Role getUserRole() {
+		return userRole;
 	}
-	public void setAdminRole(Role adminRole) {
-		this.adminRole = adminRole;
+	public void setUserRole(Role userRole) {
+		this.userRole = userRole;
 	}
-	public int getID() {
-		return ID;
+	public Degree getUserDegree() {
+		return userDegree;
+	}
+	public void setUserDegree(Degree userDegree) {
+		this.userDegree = userDegree;
+	}
+	public int getId() {
+		return Id;
 	}
 	public void setUsername(String username) {
 		this.username = username;
@@ -104,12 +103,18 @@ public class adminAccount implements UserDetails{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	public Degree getDegree() {
-		return degree;
-	}
-
-	public void setDegree(Degree degree) {
-		this.degree = degree;
-	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

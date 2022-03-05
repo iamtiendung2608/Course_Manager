@@ -15,13 +15,13 @@ import com.example.demo.AdminRelate.adminService;
 @Controller
 public class adminRegist {
 	private adminService service;
-	
 	public adminRegist(adminService service) {
 		super();
 		this.service = service;
 	}
 	@RequestMapping("/admin/regist")
-	public String registAdmin( Model model) {
+	public String registAdmin(@ModelAttribute("admin") adminAccount account,
+			Model model) {
 		model.addAttribute("degreeType", Degree.values());
 		return "admin-regist";
 	}
@@ -30,3 +30,7 @@ public class adminRegist {
 		return service.registAdmin(account);
 	}
 }
+
+
+
+

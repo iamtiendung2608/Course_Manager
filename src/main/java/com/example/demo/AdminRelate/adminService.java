@@ -12,9 +12,6 @@ public class adminService implements UserDetailsService {
 	
 	private repoAdminAccount repo;
 	private BCryptPasswordEncoder encode;
-	
-	
-	
 	public adminService(repoAdminAccount repo, BCryptPasswordEncoder encode) {
 		super();
 		this.repo = repo;
